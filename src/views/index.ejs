@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Agenda Meeting Loft</title>
+</head>
+<body>
+  <section>
+    <% schedule.map(s => { %>
+      <%let candidate = s.candidate;%>
+      <p>[<%= candidate.speciality %>] <%= candidate.name %> - <%= candidate.slot %></p>
+      <ul>
+        <% s.schedule.map(i => { %>
+          <%console.log(i.interviewer.slots)%>
+          <li><%= i.interviewer.name %> - <%= i.interview.type %> [<%= i.interviewer.slots %>]</li>
+        <% }); %>
+      </ul>
+    <% }); %>
+  </section>
+</body>
+</html>
