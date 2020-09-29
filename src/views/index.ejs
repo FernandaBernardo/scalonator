@@ -13,7 +13,6 @@
       <p>[<%= candidate.speciality %>] <%= candidate.name %> - <%= candidate.slot %></p>
       <ul>
         <% s.schedule.map(i => { %>
-          <%console.log(i.interviewer.slots)%>
           <li><%= i.interviewer.name %> - <%= i.interview.type %> [<%= i.interviewer.slots %>]</li>
         <% }); %>
       </ul>

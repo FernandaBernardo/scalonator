@@ -1,8 +1,8 @@
 const build = () => {
-  let interviews = require("./interviews.json").interviews;
-  let specialities = require("./specialities.json").specialities;
-  let interviewers = require("./interviewers.json").interviewers;
-  let candidates = require("./candidates.json").candidates;
+  let interviews = require("./data/interviews.json").interviews;
+  let specialities = require("./data/specialities.json").specialities;
+  let interviewers = require("./data/interviewers.json").interviewers;
+  let candidates = require("./data/candidates.json").candidates;
 
   let oneRandom = (list) => list[Math.floor(Math.random() * list.length)];
 
