@@ -2,7 +2,9 @@ const build = () => {
   let interviews = require("./data/interviews.json").interviews;
   let specialities = require("./data/specialities.json").specialities;
   let interviewers = require("./data/interviewers.json").interviewers;
-  let candidates = require("./data/candidates.json").candidates;
+  let allCandidates = require("./data/candidates.json").candidates;
+
+  let Candidate = require("./models/candidate.js");
 
   let oneRandom = (list) => list[Math.floor(Math.random() * list.length)];
 
@@ -59,8 +61,9 @@ const build = () => {
     return schedule.flatMap(s => s.schedule).reduce((acc, s) => (s.interviewer && s.interviewer.preferred) ? acc + 1 : acc, 0);
   }
 
-  function buildSchedule (candidates) {
-    return candidates.reduce((schedule, candidate) => {
+  function buildSchedule (allCandidates) {
+    return allCandidates.reduce((schedule, person) => {
+      let candidate = new Candidate(person.name, person.slot, person.speciality);
       let speciality = specialities.find(s => s.type === candidate.speciality);
       let interviews2 = speciality.interviews.map(i => interviews.find(i2 => i2.type === i))
       let candidateSchedule = shuffle(interviews2).reduce((candidateSchedule, i) => {
@@ -73,7 +76,7 @@ const build = () => {
 
   let attempts = [...Array(1).keys()]
   let schedule = attempts.reduce((chosen, _) => {
-    let schedule = buildSchedule(candidates);
+    let schedule = buildSchedule(allCandidates);
     let undefNumber = countUndefinedInterviews(schedule);
     let prefNumber = countPreferredInterviews(schedule);
     if(chosen.undefNumber > undefNumber) {
