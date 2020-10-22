@@ -1,10 +1,19 @@
 const build = () => {
   let interviews = require("./data/interviews.json").interviews;
-  let specialities = require("./data/specialities.json").specialities;
   let interviewers = require("./data/interviewers.json").interviewers;
-  let allCandidates = require("./data/candidates.json").candidates;
+  let candidates;
+  let specialities;
 
-  let Candidate = require("./models/candidate.js");
+  function setup() {
+    let specialitiesJson = require("./data/specialities.json").specialities;
+    let candidatesJson = require("./data/candidates.json").candidates;
+
+    let Candidate = require("./models/candidate.js");
+    let Speciality = require("./models/speciality.js");
+
+    candidates = candidatesJson.map(c => new Candidate(c.name, c.slot, c.speciality));
+    specialities = specialitiesJson.map(s => new Speciality(s.type, s.interviews));
+  }
 
   let oneRandom = (list) => list[Math.floor(Math.random() * list.length)];
 
@@ -61,9 +70,8 @@ const build = () => {
     return schedule.flatMap(s => s.schedule).reduce((acc, s) => (s.interviewer && s.interviewer.preferred) ? acc + 1 : acc, 0);
   }
 
-  function buildSchedule (allCandidates) {
-    return allCandidates.reduce((schedule, person) => {
-      let candidate = new Candidate(person.name, person.slot, person.speciality);
+  function buildSchedule (candidates) {
+    return candidates.reduce((schedule, candidate) => {
       let speciality = specialities.find(s => s.type === candidate.speciality);
       let interviews2 = speciality.interviews.map(i => interviews.find(i2 => i2.type === i))
       let candidateSchedule = shuffle(interviews2).reduce((candidateSchedule, i) => {
@@ -74,9 +82,10 @@ const build = () => {
     }, [])
   }
 
+  setup();
   let attempts = [...Array(1).keys()]
   let schedule = attempts.reduce((chosen, _) => {
-    let schedule = buildSchedule(allCandidates);
+    let schedule = buildSchedule(candidates);
     let undefNumber = countUndefinedInterviews(schedule);
     let prefNumber = countPreferredInterviews(schedule);
     if(chosen.undefNumber > undefNumber) {
