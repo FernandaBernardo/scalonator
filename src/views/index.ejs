@@ -13,7 +13,9 @@
       <p>[<%= candidate.speciality %>] <%= candidate.name %> - <%= candidate.slot %></p>
       <ul>
         <% s.schedule.map(i => { %>
-          <li><%= i.interviewer.name %> - <%= i.interview.type %> [<%= i.interviewer.slots %>]</li>
+          <% if (i.interviewer) { %>
+            <li><%= i.interviewer.name %> - <%= i.interview.type %> [<%= i.interviewer.slots %>]</li>
+          <% } %>
         <% }); %>
       </ul>
     <% }); %>

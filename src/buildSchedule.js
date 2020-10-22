@@ -38,7 +38,7 @@ const build = () => {
   ];
 
   function findInterviewer(interview, candidate, schedule, candidateSchedule) {
-    let usedInterviewers = schedule.flatMap(s => s.schedule.map(s2 => s2.interviewer.id)).concat(candidateSchedule.map(i => i.interviewer && i.interviewer.id));
+    let usedInterviewers = schedule.flatMap(s => s.schedule.map(s2 => s2.interviewer && s2.interviewer.id)).concat(candidateSchedule.map(i => i.interviewer && i.interviewer.id));
 
     let possibleInterviewers = interviewers.filter((interviewer) =>
       interviewerMatchingRules.reduce((matched, rule) => matched && rule(interviewer, interview, candidate), true))
