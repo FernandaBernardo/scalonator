@@ -1,5 +1,5 @@
 const build = () => {
-  let interviews = require("./data/interviews.json").interviews;
+  let interviews;
   let interviewers = require("./data/interviewers.json").interviewers;
   let candidates;
   let specialities;
@@ -7,12 +7,15 @@ const build = () => {
   function setup() {
     let specialitiesJson = require("./data/specialities.json").specialities;
     let candidatesJson = require("./data/candidates.json").candidates;
+    let interviewsJson = require("./data/interviews.json").interviews;
 
     let Candidate = require("./models/candidate.js");
     let Speciality = require("./models/speciality.js");
+    let Interview = require("./models/interview.js");
 
     candidates = candidatesJson.map(c => new Candidate(c.name, c.slot, c.speciality));
     specialities = specialitiesJson.map(s => new Speciality(s.type, s.interviews));
+    interviews = interviewsJson.map(i => new Interview(i.type, i.duration));
   }
 
   let oneRandom = (list) => list[Math.floor(Math.random() * list.length)];
