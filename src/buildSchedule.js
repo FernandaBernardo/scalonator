@@ -1,21 +1,21 @@
 const build = () => {
-  let interviews;
-  let interviewers = require("./data/interviewers.json").interviewers;
-  let candidates;
-  let specialities;
+  let interviews, interviewers, candidates, specialities;
 
   function setup() {
     let specialitiesJson = require("./data/specialities.json").specialities;
     let candidatesJson = require("./data/candidates.json").candidates;
     let interviewsJson = require("./data/interviews.json").interviews;
+    let interviewersJson = require("./data/interviewers.json").interviewers;
 
     let Candidate = require("./models/candidate.js");
     let Speciality = require("./models/speciality.js");
     let Interview = require("./models/interview.js");
+    let Interviewer = require("./models/interviewer.js");
 
     candidates = candidatesJson.map(c => new Candidate(c.name, c.slot, c.speciality));
     specialities = specialitiesJson.map(s => new Speciality(s.type, s.interviews));
     interviews = interviewsJson.map(i => new Interview(i.type, i.duration));
+    interviewers = interviewersJson.map(i => new Interviewer(i.name, i.interviews, i.slots))
   }
 
   let oneRandom = (list) => list[Math.floor(Math.random() * list.length)];
