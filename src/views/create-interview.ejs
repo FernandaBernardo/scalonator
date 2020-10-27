@@ -11,5 +11,19 @@
     <a href="/interview">Criar tipo de entrevista</a>
     <a href="/schedule">Gerar agenda :)</a>
   </section>
+
+  <section>
+    <form action="/create-interview" method="POST">
+        Tipo: <input type="text" name="type">
+        <input type="submit" value="Cadastrar">
+    </form>
+  </section>
+
+  <section>
+    Todas interviews
+    <% interviews.map ( i => { %>
+      <p><%= i %></p>
+    <% }); %>
+  </section>
 </body>
 </html>
