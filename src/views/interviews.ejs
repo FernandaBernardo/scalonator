@@ -13,7 +13,7 @@
   </section>
 
   <section>
-    <form action="/create-interview" method="POST">
+    <form action="/interview/create" method="POST">
         Tipo: <input type="text" name="type">
         <input type="submit" value="Cadastrar">
     </form>
@@ -22,7 +22,7 @@
   <section>
     Todas interviews
     <% interviews.map ( i => { %>
-      <p><%= i %></p>
+      <p><%= i %></p> <a href="/interview/delete/<%= i %>">Deletar</a>
     <% }); %>
   </section>
 </body>

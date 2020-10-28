@@ -12,6 +12,10 @@ app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store')
+  next()
+})
 
 app.get('/', function (req, res) {
   res.render("index");
@@ -20,14 +24,21 @@ app.get('/', function (req, res) {
 app.get('/interview', function (req, res) {
   interviewDAO.allInterviews()
     .then(allInterviews => {
-      res.render("create-interview", {
+      res.render("interviews", {
         interviews: allInterviews
       });
     });
 });
 
-app.post('/create-interview', function(req, res) {
+app.post('/interview/create', function(req, res) {
   interviewDAO.addInterview(req.body.type)
+    .then(res.redirect(301, '/interview'));
+});
+
+app.get('/interview/delete/:id', function(req, res) {
+  console.log('aqui primeiro')
+  var param = req.params;
+  interviewDAO.deleteInterview(param.id)
     .then(res.redirect(301, '/interview'));
 });
 

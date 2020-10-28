@@ -9,9 +9,11 @@ let interviewDAO = {
     });
   },
 
-  editInterview: function(oldInterview, newInterview) {
+  deleteInterview: function(interview) {
     return new Promise((resolve, reject) => {
-
+      client.srem(['interviews', interview], function(err, reply) {
+        resolve();
+      });
     });
   },
 
