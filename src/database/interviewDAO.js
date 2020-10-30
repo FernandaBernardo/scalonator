@@ -1,4 +1,4 @@
-const interview = require('../models/interview');
+const interview = require('./dbModels').interview;
 
 let interviewDAO = {
   addInterview: async function(data) {
@@ -6,7 +6,7 @@ let interviewDAO = {
   },
 
   deleteInterview: async function(id) {
-    await interview.findOneAndDelete();
+    await interview.findOneAndRemove({ _id: id });
   },
 
   allInterviews: async function() {

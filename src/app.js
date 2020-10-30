@@ -42,7 +42,7 @@ app.get('/interview/delete/:id', async function(req, res) {
 
 app.get('/schedule', async function (req, res) {
   let allInterviews = await interviewDAO.allInterviews();
-
+  
   res.render('schedule', {
     schedule: schedule.build({ interviews: allInterviews }).schedule
   });
