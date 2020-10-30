@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const schedule = require('./buildSchedule.js');
 
 const PORT = process.env.PORT || 5000;
-const client = require('./database/redis-client');
+const dbClient = require('./database/dbClient.js')();
 let interviewDAO = require('./database/interviewDAO');
 
 app.engine('html', require('ejs').renderFile);
@@ -21,36 +21,31 @@ app.get('/', function (req, res) {
   res.render("index");
 });
 
-app.get('/interview', function (req, res) {
-  interviewDAO.allInterviews()
-    .then(allInterviews => {
-      res.render("interviews", {
-        interviews: allInterviews
-      });
-    });
+app.get('/interview', async function (req, res) {
+  let data = await interviewDAO.allInterviews()
+  res.render("interviews", {
+    interviews: data
+  });
 });
 
-app.post('/interview/create', function(req, res) {
-  interviewDAO.addInterview(req.body.type)
-    .then(res.redirect(301, '/interview'));
+app.post('/interview/create', async function(req, res) {
+  await interviewDAO.addInterview(req.body.type);
+  res.redirect(301, '/interview');
 });
 
-app.get('/interview/delete/:id', function(req, res) {
-  console.log('aqui primeiro')
+app.get('/interview/delete/:id', async function(req, res) {
   var param = req.params;
-  interviewDAO.deleteInterview(param.id)
-    .then(res.redirect(301, '/interview'));
+  await interviewDAO.deleteInterview(param.id);
+
+  res.redirect(301, '/interview');
 });
 
-app.get('/schedule', function (req, res) {
-  client
-    .multi()
-    .smembers('interviews')
-    .exec(function(err, replies) {
-      res.render('schedule', {
-        schedule: schedule.build({ interviews: replies[0] }).schedule
-      });
-    });
+app.get('/schedule', async function (req, res) {
+  let allInterviews = await interviewDAO.allInterviews();
+
+  res.render('schedule', {
+    schedule: schedule.build({ interviews: allInterviews }).schedule
+  });
 })
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));

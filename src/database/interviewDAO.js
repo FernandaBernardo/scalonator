@@ -1,28 +1,16 @@
-const client = require('./redis-client');
+const interview = require('../models/interview');
 
 let interviewDAO = {
-  addInterview: function(interview) {
-    return new Promise((resolve, reject) => {
-      client.sadd(['interviews', interview], function(err, reply) {
-        resolve();
-      });
-    });
+  addInterview: async function(data) {
+    await interview.create({type: data});
   },
 
-  deleteInterview: function(interview) {
-    return new Promise((resolve, reject) => {
-      client.srem(['interviews', interview], function(err, reply) {
-        resolve();
-      });
-    });
+  deleteInterview: async function(id) {
+    await interview.findOneAndDelete();
   },
 
-  allInterviews: function() {
-    return new Promise((resolve, reject) => {
-      client.smembers('interviews', function (err, object) {
-        resolve(object);
-      });
-    });
+  allInterviews: async function() {
+    return await interview.find();
   }
 }
 

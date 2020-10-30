@@ -21,9 +21,11 @@
 
   <section>
     Todas interviews
-    <% interviews.map ( i => { %>
-      <p><%= i %></p> <a href="/interview/delete/<%= i %>">Deletar</a>
-    <% }); %>
+    <% if(interviews) { %>
+      <% interviews.map ( i => { %>
+        <p><%= i.type %></p> <a href="/interview/delete/<%= i.id %>">Deletar</a>
+      <% }); %>
+    <% } %>
   </section>
 </body>
 </html>

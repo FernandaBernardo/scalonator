@@ -21,7 +21,7 @@ const build = ({ interviews }) => {
     return array;
   }
 
-  let interviewTypeRule = (interviewer, interview, _) => -1 !== interviewer.interviews.indexOf(interview);
+  let interviewTypeRule = (interviewer, interview, _) => -1 !== interviewer.interviews.indexOf(interview.type);
   let slotRule = (interviewer, _, candidate) => -1 !== interviewer.slots.indexOf(candidate.slot);
   let managerRule = (interviewer, _, candidate) => candidate.isManager ? interviewer.isManager : true;
 
@@ -62,7 +62,7 @@ const build = ({ interviews }) => {
   function buildSchedule (candidates) {
     return candidates.reduce((schedule, candidate) => {
       let speciality = specialities.find(s => s.type === candidate.speciality);
-      let interviews2 = speciality.interviews.map(i => interviews.find(i2 => i2 === i))
+      let interviews2 = speciality.interviews.map(i => interviews.find(i2 => i2.type === i))
       let candidateSchedule = shuffle(interviews2).reduce((candidateSchedule, i) => {
         let interviewer = findInterviewer(i, candidate, schedule, candidateSchedule);
         return [...candidateSchedule, {interview: i, interviewer: interviewer}]
