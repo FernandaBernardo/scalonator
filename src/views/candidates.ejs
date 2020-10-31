@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Scalonator Interviewers</title>
+</head>
+<body>
+  <section>
+    <a href="/interview">Criar tipo de entrevista</a>
+    <a href="/speciality">Criar especialidade</a>
+    <a href="/candidate">Criar pessoa candidata</a>
+    <a href="/schedule">Gerar agenda :)</a>
+  </section>
+
+  <section>
+    <form action="/candidate/create" method="POST">
+        Nome: <input type="text" name="name">
+        Slot:
+        <label><input type="radio" name="slot" value="morning">Manhã</label>
+        <label><input type="radio" name="slot" value="afternoon">Tarde</label>
+        <label>Especialidade:
+          <select name="speciality" >
+            <% specialities.map ( s => { %>
+              <option value="<%= s._id %>"><%= s.type %></option>
+            <% }); %>
+          </select>
+        </label>
+        <input type="submit" value="Cadastrar">
+    </form>
+  </section>
+
+  <section>
+    Todas Pessoas Candidatas
+    <% if(candidates) { %>
+      <% candidates.map ( c => { %>
+        <p><%= c.name %> [
+          <%= c.slot %> -
+          <%= c.speciality.type %> ]
+        </p>
+        <a href="/candidate/delete/<%= c.id %>">Deletar</a>
+      <% }); %>
+    <% } %>
+  </section>
+</body>
+</html>

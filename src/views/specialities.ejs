@@ -10,6 +10,7 @@
   <section>
     <a href="/interview">Criar tipo de entrevista</a>
     <a href="/speciality">Criar especialidade</a>
+    <a href="/candidate">Criar pessoa candidata</a>
     <a href="/schedule">Gerar agenda :)</a>
   </section>
 
@@ -17,7 +18,7 @@
     <form action="/speciality/create" method="POST">
         Tipo: <input type="text" name="type">
         <% interviews.map ( i => { %>
-          <%= i.type %><input type="checkbox" name="interviews" value="<%= i._id %>">
+          <label><%= i.type %><input type="checkbox" name="interviews" value="<%= i._id %>"></label>
         <% }); %>
         <input type="submit" value="Cadastrar">
     </form>

@@ -10,7 +10,7 @@
   <section>
     <% schedule.map(s => { %>
       <%let candidate = s.candidate;%>
-      <p>[<%= candidate.speciality %>] <%= candidate.name %> - <%= candidate.slot %></p>
+      <p>[<%= candidate.speciality.type %>] <%= candidate.name %> - <%= candidate.slot %></p>
       <ul>
         <% s.schedule.map(i => { %>
           <% if (i.interviewer) { %>

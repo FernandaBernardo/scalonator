@@ -20,11 +20,27 @@ const SpecialitySchema = new Schema({
   }]
 });
 
+const CandidateSchema = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  slot: {
+    type: String,
+    required: true
+  },
+  speciality: {
+    type: Schema.Types.ObjectId,
+    ref: 'speciality',
+    required: true
+  }
+});
+
 
 let interview = mongoose.model("interview", InterviewSchema);
 let speciality = mongoose.model("speciality", SpecialitySchema);
-
+let candidate = mongoose.model("candidate", CandidateSchema);
 
 module.exports = {
-  interview, speciality
+  interview, speciality, candidate
 }

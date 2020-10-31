@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 5000;
 
 let interviewDAO = require('./database/interviewDAO');
 let specialityDAO = require('./database/specialityDAO');
+let candidateDAO = require('./database/candidateDAO');
 
 require('./database/dbClient.js')();
 
@@ -65,14 +66,38 @@ app.get('/speciality/delete/:id', async function(req, res) {
   res.redirect(301, '/speciality');
 });
 
+app.get('/candidate', async function (req, res) {
+  let specialities = await specialityDAO.allSpecialities();
+  let candidates = await candidateDAO.allCandidates();
+
+  res.render("candidates", {
+    specialities: specialities,
+    candidates: candidates
+  });
+});
+
+app.post('/candidate/create', async function(req, res) {
+  await candidateDAO.addCandidate(req.body);
+  res.redirect(301, '/candidate');
+});
+
+app.get('/candidate/delete/:id', async function(req, res) {
+  var param = req.params;
+  await candidateDAO.deleteCandidate(param.id);
+
+  res.redirect(301, '/candidate');
+});
+
 app.get('/schedule', async function (req, res) {
   let allInterviews = await interviewDAO.allInterviews();
   let allSpecialities = await specialityDAO.allSpecialities();
+  let allCandidates = await candidateDAO.allCandidates();
   
   res.render('schedule', {
     schedule: schedule.build({
       interviews: allInterviews,
-      specialities: allSpecialities
+      specialities: allSpecialities,
+      candidates: allCandidates
     }).schedule
   });
 })
