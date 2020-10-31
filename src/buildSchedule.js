@@ -1,6 +1,6 @@
-const build = ({ interviews }) => {
+const build = ({ interviews, specialities }) => {
   // let interviews = require("./data/interviews.json").interviews;
-  let specialities = require("./data/specialities.json").specialities;
+  // let specialities = require("./data/specialities.json").specialities;
   let interviewers = require("./data/interviewers.json").interviewers;
   let candidates = require("./data/candidates.json").candidates;
 
@@ -62,7 +62,7 @@ const build = ({ interviews }) => {
   function buildSchedule (candidates) {
     return candidates.reduce((schedule, candidate) => {
       let speciality = specialities.find(s => s.type === candidate.speciality);
-      let interviews2 = speciality.interviews.map(i => interviews.find(i2 => i2.type === i))
+      let interviews2 = speciality.interviews.map(i => interviews.find(i2 => i2.type === i.type))
       let candidateSchedule = shuffle(interviews2).reduce((candidateSchedule, i) => {
         let interviewer = findInterviewer(i, candidate, schedule, candidateSchedule);
         return [...candidateSchedule, {interview: i, interviewer: interviewer}]

@@ -5,8 +5,11 @@ const bodyParser = require('body-parser');
 const schedule = require('./buildSchedule.js');
 
 const PORT = process.env.PORT || 5000;
-const dbClient = require('./database/dbClient.js')();
+
 let interviewDAO = require('./database/interviewDAO');
+let specialityDAO = require('./database/specialityDAO');
+
+require('./database/dbClient.js')();
 
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
@@ -40,11 +43,37 @@ app.get('/interview/delete/:id', async function(req, res) {
   res.redirect(301, '/interview');
 });
 
+app.get('/speciality', async function (req, res) {
+  let specialities = await specialityDAO.allSpecialities();
+  let interviews = await interviewDAO.allInterviews();
+
+  res.render("specialities", {
+    specialities: specialities,
+    interviews: interviews
+  });
+});
+
+app.post('/speciality/create', async function(req, res) {
+  await specialityDAO.addSpeciality(req.body);
+  res.redirect(301, '/speciality');
+});
+
+app.get('/speciality/delete/:id', async function(req, res) {
+  var param = req.params;
+  await specialityDAO.deleteSpeciality(param.id);
+
+  res.redirect(301, '/speciality');
+});
+
 app.get('/schedule', async function (req, res) {
   let allInterviews = await interviewDAO.allInterviews();
+  let allSpecialities = await specialityDAO.allSpecialities();
   
   res.render('schedule', {
-    schedule: schedule.build({ interviews: allInterviews }).schedule
+    schedule: schedule.build({
+      interviews: allInterviews,
+      specialities: allSpecialities
+    }).schedule
   });
 })
 

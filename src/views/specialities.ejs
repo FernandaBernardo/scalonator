@@ -14,17 +14,25 @@
   </section>
 
   <section>
-    <form action="/interview/create" method="POST">
+    <form action="/speciality/create" method="POST">
         Tipo: <input type="text" name="type">
+        <% interviews.map ( i => { %>
+          <%= i.type %><input type="checkbox" name="interviews" value="<%= i._id %>">
+        <% }); %>
         <input type="submit" value="Cadastrar">
     </form>
   </section>
 
   <section>
-    Todas interviews
-    <% if(interviews) { %>
-      <% interviews.map ( i => { %>
-        <p><%= i.type %></p> <a href="/interview/delete/<%= i.id %>">Deletar</a>
+    Todas Especialidades
+    <% if(specialities) { %>
+      <% specialities.map ( s => { %>
+        <p><%= s.type %> - [
+          <% s.interviews.map ( i => { %>
+            <%= i.type %>,
+          <% }) %>]
+        </p> 
+        <a href="/speciality/delete/<%= s.id %>">Deletar</a>
       <% }); %>
     <% } %>
   </section>
